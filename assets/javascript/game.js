@@ -5,7 +5,8 @@ $(document).ready(function() {
 var correctAnswer, incorrectAnswer, gamePlaying;
 
 var DOM = {
-    $start: $("#start")
+    $start: $("#start"),
+    $time: $("#time")
 }
 
 // Initiate function
@@ -13,9 +14,8 @@ var DOM = {
 function init() {
     correctAnswer = 0;
     incorrectAnswer = 0;
-    gamePlaying = false;
-    //set timer to 00:00
-    $("#time").text("0:00");
+    gamePlaying = false;      
+    timerReset();
     
     //display start button
     DOM.$start.css("visibility", "visible");
@@ -26,6 +26,7 @@ DOM.$start.on("click", function(){
     gamePlaying = true;
     DOM.$start.css("visibility", "hidden");
     showQuestions();
+    timerStart();
 })
 
 // Question constructor and questions
@@ -71,47 +72,67 @@ var allQuestions = {
     }
 //display new Questions
 function showQuestions(){
-    $("#question").text(allQuestions.question0.ques);
-    //randomly assign ans + four options in UI option fields
-    var numbers = [1, 2, 3, 4, 5];
-    // function shuffle(el){
-    //     for(var x, y, i = el.length; i; x = Math.floor(Math.random() * i), y = el[--i], el[i] = el[x], el[x] = y); 
-    //     return el;
-    //     }
-    // var random = shuffle(numbers);  
-    // console.log(random);    
+     $("#question").text(allQuestions.question0.ques);
 
-var getNumber = function(el) {
-    random = [];
-    for(var i = 0; i < el.length; i++) {
-        var index =  Math.floor(Math.random() * el.length); // 2, [1, 2, 4, 5]
-        var drawn = el.splice(index, 1); // [2]
-        drawn.push(random[i]);
+    //randomly assign ans + four options in UI option fields using Fisher-Yates shuffle algorithm                                         
+    var numbers = [1, 2, 3, 4, 5]; 
+    function shuffle(el) {
+        var j, x, i;
+        for (i = el.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = el[i];
+            el[i] = el[j];
+            el[j] = x;
+        }
+        return el;
     }
-    console.log(random);
-    return random;
-    // if(numbers.length != 0) {
-    //     var index =  Math.floor(Math.random() * numbers.length); // 2, [1, 2, 4, 5]
-    //     var drawn = numbers.splice(index, 1); // [2]
-    //     return drawn[0]; //[2]
-    // }
-    var getthatNumber = getNumber();
-    console.log(getthatNumber);
-}
-
-
-    $("#option" + getNumber[0]).text(allQuestions.question0.ans);
-    $("#option" + getNumber[1]).text(allQuestions.question0.opt1);
-    $("#option" + getNumber[2]).text(allQuestions.question0.opt2);
-    $("#option" + getNumber[3]).text(allQuestions.question0.opt3);
-    $("#option" + getNumber[4]).text(allQuestions.question0.opt4);       
+    var random = shuffle(numbers);  
+    $("#option" + random[0]).text(allQuestions.question0.ans).addClass("ans");
+    $("#option" + random[1]).text(allQuestions.question0.opt1);
+    $("#option" + random[2]).text(allQuestions.question0.opt2);
+    $("#option" + random[3]).text(allQuestions.question0.opt3);
+    $("#option" + random[4]).text(allQuestions.question0.opt4);       
 };
 
-//Game playing
-if(gamePlaying) {
+//Timer Functions
+var time = 0;
+var intervalID;
+function timerStart() {
+    if(gamePlaying) {        
+        intervalID = setInterval(count, 1000);
+    }    
+};
 
-   //timer starts counting down from 1 minute to 0
+function timerReset() {
+    time = 60;
+    DOM.$time.text("1:00");
+    clearInterval(intervalID);
+};
 
+function count() {
+    if(time > 0) {
+        time--;
+        var converted = timeConverter(time);
+        DOM.$time.text(converted);
+        }
+};    
+
+function timeConverter(t){
+    var minutes = Math.floor(t / 60);
+    var seconds = t - (minutes * 60);
+
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    if (minutes === 0) {
+        minutes = "00";
+    } else if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    return minutes + ":" + seconds;
+};
+
+$("")
     // if correct guess made before timer hits 0, display "correct", hide current question and answers, and display next question and answers after a few seconds
 
     // else if timer reaches 0, display "times up", and display answer in bold. wait a few seconds then display next question and answer.
@@ -119,9 +140,7 @@ if(gamePlaying) {
     //else if incorrect guess made, display "wrong answer", display answer in bold. Wait a few seconds then display next question and answer. 
 
     // when reach end of questions, show the number of correct answers, incorrect answers, and display start button (initiate function)
-}
  
-
 //Initiate game    
 init();
 
