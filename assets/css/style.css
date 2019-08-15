@@ -1,0 +1,67 @@
+/* Color Palette
+    Blue #7FCAAC
+    Yellow #F3BF2A
+    Brown #92623B
+    Gray #383838
+ 
+*/
+
+
+/* GLobal styles
+--------------------*/
+
+body{
+    background-image: url("../images/bright_squares.png");
+    color: #383838;        
+    font-size: 1em; 
+    font-family: Georgia, 'Times New Roman', Times, serif;    
+ }
+
+
+h1 {
+    font-family: 'Permanent Marker', cursive;   
+}
+
+#timer {
+    font-size: 1.5em;
+    margin-top: 2%;
+}
+
+#time {
+    margin-left: 2%;
+    font-weight: 600;
+    color: #92623B;
+}
+
+/* Main body styles
+--------------------*/
+#start {
+    position: absolute;
+    width: 30%;
+    font-size: 2em;
+    top: 30%;
+}
+
+.questions {
+    margin-top: 5%;
+    font-size: 2.5em;
+}
+
+#question {
+    color: #7FCAAC;
+    font-weight: 600;
+}
+
+
+/* Footer styles
+--------------------*/
+footer {
+    background: #666666;
+    border-top: 8px solid #7FCAAC;
+    color: #ffffff;
+    font-size: 0.5em;
+    text-align: center;
+    height: 5%;
+    padding-bottom: 5px;
+}
+
