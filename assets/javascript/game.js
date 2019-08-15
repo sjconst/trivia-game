@@ -74,16 +74,37 @@ function showQuestions(){
     $("#question").text(allQuestions.question0.ques);
     //randomly assign ans + four options in UI option fields
     var numbers = [1, 2, 3, 4, 5];
-    function shuffle(el){
-        for(var x, y, i = el.length; i; x = parseInt(Math.random() * i), y = el[--i], el[i] = el[x], el[x] = y); 
-        return el;
-        }
-    var random = shuffle(numbers);      
-    $("#option" + random[0]).text(allQuestions.question0.ans);
-    $("#option" + random[1]).text(allQuestions.question0.opt1);
-    $("#option" + random[2]).text(allQuestions.question0.opt2);
-    $("#option" + random[3]).text(allQuestions.question0.opt3);
-    $("#option" + random[4]).text(allQuestions.question0.opt4);       
+    // function shuffle(el){
+    //     for(var x, y, i = el.length; i; x = Math.floor(Math.random() * i), y = el[--i], el[i] = el[x], el[x] = y); 
+    //     return el;
+    //     }
+    // var random = shuffle(numbers);  
+    // console.log(random);    
+
+var getNumber = function(el) {
+    random = [];
+    for(var i = 0; i < el.length; i++) {
+        var index =  Math.floor(Math.random() * el.length); // 2, [1, 2, 4, 5]
+        var drawn = el.splice(index, 1); // [2]
+        drawn.push(random[i]);
+    }
+    console.log(random);
+    return random;
+    // if(numbers.length != 0) {
+    //     var index =  Math.floor(Math.random() * numbers.length); // 2, [1, 2, 4, 5]
+    //     var drawn = numbers.splice(index, 1); // [2]
+    //     return drawn[0]; //[2]
+    // }
+    var getthatNumber = getNumber();
+    console.log(getthatNumber);
+}
+
+
+    $("#option" + getNumber[0]).text(allQuestions.question0.ans);
+    $("#option" + getNumber[1]).text(allQuestions.question0.opt1);
+    $("#option" + getNumber[2]).text(allQuestions.question0.opt2);
+    $("#option" + getNumber[3]).text(allQuestions.question0.opt3);
+    $("#option" + getNumber[4]).text(allQuestions.question0.opt4);       
 };
 
 //Game playing
