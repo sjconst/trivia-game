@@ -52,6 +52,12 @@ h1 {
     font-weight: 600;
 }
 
+#winlose {
+    font-weight: 600;
+    font-size: 4em;
+    color: #92623B;
+}
+
 
 /* Footer styles
 --------------------*/
