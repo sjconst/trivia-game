@@ -1,88 +1,7 @@
-
 $(document).ready(function() {
 
 //Global variables, setup objects
-var gamePlaying, state;
-
-//UI Functions and Methods
-var DOM = {
-    $start: $("#start"),
-    $time: $("#time"),
-    $questions: $("#question"),
-    $popup: $("#winlose")
-};
-
-var tally = {
-    correctAnswer: 0,
-    incorrectAnswer: 0,
-    totalCorrect: [],
-    totalIncorrect: []
-}
-
-function displayStart() {
-    DOM.$start.css("visibility", "visible");
-};
-
-function hideStart() {
-    DOM.$start.css("visibility", "hidden");
-};
-
-function correctCount(){
-    //correct answer count
-    tally.correctAnswer++;    
-    state = tally.correctAnswer + tally.incorrectAnswer;
-    return state;
-};
-
-function incorrectCount(){
-    tally.incorrectAnswer++;    
-    state = tally.correctAnswer + tally.incorrectAnswer;
-    return state;
-}
-
-function showQuestions(el){
-    var random = allQuestions.shuffle(); 
-    var keys = Object.values(allQuestions)[el];    
-    $("#question").text(keys.ques);
-    $("#option" + random[0]).text(keys.ans).addClass("ans"); 
-    $("#option" + random[1]).text(keys.opt1); 
-    $("#option" + random[2]).text(keys.opt2);
-    $("#option" + random[3]).text(keys.opt3); 
-    $("#option" + random[4]).text(keys.opt4);    
-};
-
-var winlose = {
-    ansBold: function(){
-        $(".ans").css("font-weight", "600");
-    },
-    timesUp: function(){
-        DOM.$popup.text("Time's up!");
-        winlose.ansBold();
-    },
-    correct: function(){     
-        DOM.$popup.text("Correct!");
-        winlose.ansBold();
-    },
-    wrong: function(){
-        DOM.$popup.text("Wrong answer!");
-        winlose.ansBold();
-    },
-    reset: function(){
-        DOM.$popup.empty();
-        $(".option").css("font-weight", "100");
-    }
-
-}
-
-// Initiate function
-function init() {
-    gamePlaying = false; 
-    tally.correctAnswer = 0;
-    tally.incorrectAnswer = 0;         
-    timer.timerReset();
-    displayStart();  
-    state = 0;  
-};
+var gamePlaying, state, noQuestions;
 
 //Question constructor and objects
 var Question = function(ques, ans, opt1, opt2, opt3, opt4){
@@ -124,49 +43,195 @@ var allQuestions = {
         "Everest",
         "K2",
         "Broad Peak",
-        "Mount Kilimanjar",
+        "Mount Kilimanjaro",
         "Denali"
-    ),     
+    ),
+    question4: new Question(
+        "What is the Great Barrier Reef made of?",
+        "Coral",
+        "Shipwrecks",
+        "Bones",
+        "Algae",
+        "Kelp"
+    ),
+    question5: new Question(
+        "How many U.S. states border Mexico?",
+        "5",
+        "4",
+        "3",
+        "7",
+        "6"
+    ),
+    question6: new Question(
+        "What is the largest country in South America?",
+        "Brazil",
+        "Uruguay",
+        "Chile",
+        "Argentina",
+        "Venezuela"
+    )     
+};
+
+// Counting object
+var tally = {
+    correctAnswer: 0,
+    incorrectAnswer: 0,
+    correctCount: function(){
+        tally.correctAnswer++;    
+        state = tally.correctAnswer + tally.incorrectAnswer;
+        return state;
+    },
+    incorrectCount: function(){
+        tally.incorrectAnswer++;    
+        state = tally.correctAnswer + tally.incorrectAnswer;
+        return state;
+    },
+    questions: function(){
+        var arr = Object.keys(allQuestions);     
+        return arr.length;
+    }
+};
+noQuestions = tally.questions();
+
+//UI Object and Methods
+var DOM = {
+    $start: $("#start"),
+    $time: $("#time"),
+    $questions: $("#question"),
+    $allQuestions: $(".questions"),
+    $popup: $("#winlose"),
+    displayStart: function(){
+        DOM.$start.css("visibility", "visible");
+    },
+    hideStart: function(){
+        DOM.$start.css("visibility", "hidden");
+    },
+    ansBold: function(){
+        $(".ans").css("font-weight", "600");
+    },
+    timesUp: function(){
+        DOM.$popup.text("Time's up!");
+        DOM.ansBold();      
+    },
+    correct: function(){     
+        DOM.$popup.text("Correct!");
+        DOM.ansBold();       
+    },
+    wrong: function(){
+        DOM.$popup.text("Wrong answer!");
+        DOM.ansBold();
+    },
+    reset: function(){
+        $(".option").removeClass("ans");
+        DOM.$popup.empty().removeClass("tally");
+        $(".option").css("font-weight", "100");
+    },
+    finalCount: function(){
+        DOM.$allQuestions.css("visibility", "hidden");
+        DOM.$popup.empty();
+        DOM.$popup.html("<div> Total correct: " + tally.correctAnswer).addClass("tally");
+        DOM.$popup.append("<br> Total incorrect: " + tally.incorrectAnswer);
+    }
+};
+
+//Questions
+var displayQuestions = {
+    nextQuestion: function() {
+        if(state != noQuestions){
+            gamePlaying = false;
+            setTimeout(function(){
+                gamePlaying = true;
+                // Un-bold answer
+                DOM.reset();
+                //display next question
+                displayQuestions.showQuestions(state);    
+                //reset time
+                timer.timerReset(); 
+                //start timer 
+                timer.timerStart();                  
+            }, 2000);  
+        }  
+    },
+    showQuestions: function(el){
+        var random = displayQuestions.shuffle(); 
+        var keys = Object.values(allQuestions)[el];    
+        $("#question").text(keys.ques);
+        $("#option" + random[0]).text(keys.ans).addClass("ans"); 
+        $("#option" + random[1]).text(keys.opt1); 
+        $("#option" + random[2]).text(keys.opt2);
+        $("#option" + random[3]).text(keys.opt3); 
+        $("#option" + random[4]).text(keys.opt4);    
+    },
+    timerUp: function(){
+        DOM.timesUp();
+        tally.incorrectCount(); 
+        if(state === noQuestions) {  
+            displayQuestions.theEnd();        
+        } else if(gamePlaying === true) {
+            displayQuestions.nextQuestion();  
+        };     
+    },
+    theEnd: function(){        
+        DOM.finalCount();
+        timer.timerReset();
+        gamePlaying = false;
+        setTimeout(function(){
+            init();
+        }, 3000);
+    },
     //randomly assign ans + four options in UI option fields using modern Fisher-Yates shuffle algorithm  
     shuffle: function() {
-            var numbers = [1, 2, 3, 4, 5]; 
-            function shuffle(el) {
-                var j, x, i;
-                for (i = el.length - 1; i > 0; i--) {
-                    j = Math.floor(Math.random() * (i + 1));
-                    x = el[i];
-                    el[i] = el[j];
-                    el[j] = x;
-                }
-                return el;
+        var numbers = [1, 2, 3, 4, 5]; 
+        function shuffle(el) {
+            var j, x, i;
+            for (i = el.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = el[i];
+                el[i] = el[j];
+                el[j] = x;
             }
-            return random = shuffle(numbers);  
-    }    
-}
+            return el;
+        }
+        return random = shuffle(numbers);  
+    }     
+};
+
+// Initiate function
+function init() {
+    gamePlaying = false; 
+    tally.correctAnswer = 0;
+    tally.incorrectAnswer = 0;     
+    DOM.reset();  
+    timer.timerReset();
+    DOM.displayStart();  
+    state = 0;  
+};
 
 //Timer object
 var timer = {
+    t: 0,
     time: 0,
     intervalID: 0,
-    converted: 0,
+    converted: 0,    
+    maxTime: 15,
     timerStart: function() {        
-            if(gamePlaying) {
-            timer.intervalID = setInterval(timer.count, 1000);
+            if(gamePlaying) {            
+            timer.intervalID = setInterval(timer.count, 1000);                  
+            timer.t = setTimeout(displayQuestions.timerUp, (parseInt(timer.maxTime) * 1000));      
             }
     },
-    timerReset: function() {
-            timer.time = 10; //change to 60 once deployed
-            DOM.$time.text("0:10"); //change to "1:00" once deployed
+    timerReset: function() {                    
             clearInterval(timer.intervalID);
+            clearTimeout(timer.t);
+            timer.time = parseInt(timer.maxTime); 
+            DOM.$time.text("00:" + timer.maxTime); 
     },
     count: function(){
             if(timer.time > 0) {
                 timer.time--;
                 timer.converted = timer.timeConverter(timer.time);
                 DOM.$time.text(timer.converted);
-            } else if (timer.time <= 0) {
-                winlose.timesUp();               
-            }
+            } 
     },
     timeConverter: function(t){
         var minutes = Math.floor(t / 60);
@@ -182,48 +247,45 @@ var timer = {
         return minutes + ":" + seconds;
     }
 };
+
 // Event handlers
-//once start button clicked, button disappears and game starts
+//once start button clicked, start button disappears, question displayed, timer starts
 DOM.$start.on("click", function(){
     gamePlaying = true;
-    hideStart();
-    showQuestions(state);
+    DOM.hideStart();
+    DOM.$allQuestions.css("visibility", "visible"); 
+    displayQuestions.showQuestions(state);
     timer.timerStart();       
 });
 
-//when answer selected
+//when option selected
 $(".option").on("click", function() {
-    if($(this).hasClass("ans")){
-        winlose.correct();     
-        $(this).removeClass("ans");     
-        correctCount();
-        setTimeout(function(){
-            showQuestions(state);
-            winlose.reset();
-            timer.timerReset();
-            timer.timerStart();
-        }, 3000);        
-    } else {
-        winlose.wrong();
-        $(".option").removeClass("ans");
-        incorrectCount();
-        setTimeout(function(){
-            showQuestions(state);
-            winlose.reset();
-            timer.timerReset();
-            timer.timerStart();
-        }, 3000);
-    }
-    // if correct guess made before timer hits 0, display "correct", hide current question and answers, and display next question and answers after a few seconds
-    
-    // else if timer reaches 0, display "times up", and display answer in bold. wait a few seconds then display next question and answer.
-
-    //else if incorrect guess made, display "wrong answer", display answer in bold. Wait a few seconds then display next question and answer. 
-
-    // when reach end of questions, show the number of correct answers, incorrect answers, and display start button (initiate function)
+    if(gamePlaying === true){
+        if($(this).hasClass("ans")){
+            //Bold correct answer, show "Correct!"      
+            DOM.correct();    
+            //Add correct guess count
+            tally.correctCount();     
+            if(state === noQuestions) {                
+                displayQuestions.theEnd();
+            } else {
+                //after two seconds
+                displayQuestions.nextQuestion();  
+            }           
+        } else {
+            //Bold correct answer, show "Wrong!"
+            DOM.wrong();
+            tally.incorrectCount();  
+            if (state === noQuestions) {              
+                displayQuestions.theEnd();
+            } else {
+                //after two seconds
+                displayQuestions.nextQuestion();   
+            }        
+        }
+}
 })
 
- 
 //Initiate game    
 init();
 
