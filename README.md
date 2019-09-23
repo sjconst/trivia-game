@@ -2,6 +2,8 @@
 
 This is a trivia game created August 2019 to work with JQuery and Javascript. 
 
+![trivia](https://user-images.githubusercontent.com/42453320/65470980-3b7fdb00-de22-11e9-871f-795e2e468841.JPG)
+
 ## Getting Started
 
 To view this live on your browser, go to https://sjconst.github.io/trivia-game

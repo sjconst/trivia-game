@@ -77,13 +77,13 @@ var tally = {
     correctAnswer: 0,
     incorrectAnswer: 0,
     correctCount: function(){
-        tally.correctAnswer++;    
-        state = tally.correctAnswer + tally.incorrectAnswer;
+        this.correctAnswer++;    
+        state = this.correctAnswer + this.incorrectAnswer;
         return state;
     },
     incorrectCount: function(){
-        tally.incorrectAnswer++;    
-        state = tally.correctAnswer + tally.incorrectAnswer;
+        this.incorrectAnswer++;    
+        state = this.correctAnswer + this.incorrectAnswer;
         return state;
     },
     questions: function(){
@@ -101,36 +101,36 @@ var DOM = {
     $allQuestions: $(".questions"),
     $popup: $("#winlose"),
     displayStart: function(){
-        DOM.$start.css("visibility", "visible");
+        this.$start.css("visibility", "visible");
     },
     hideStart: function(){
-        DOM.$start.css("visibility", "hidden");
+        this.$start.css("visibility", "hidden");
     },
     ansBold: function(){
         $(".ans").css("font-weight", "600");
     },
     timesUp: function(){
-        DOM.$popup.text("Time's up!");
-        DOM.ansBold();      
+        this.$popup.text("Time's up!");
+        this.ansBold();      
     },
     correct: function(){     
-        DOM.$popup.text("Correct!");
-        DOM.ansBold();       
+        this.$popup.text("Correct!");
+        this.ansBold();       
     },
     wrong: function(){
-        DOM.$popup.text("Wrong answer!");
-        DOM.ansBold();
+        this.$popup.text("Wrong answer!");
+        this.ansBold();
     },
     reset: function(){
         $(".option").removeClass("ans");
-        DOM.$popup.empty().removeClass("tally");
+        this.$popup.empty().removeClass("tally");
         $(".option").css("font-weight", "100");
     },
     finalCount: function(){
-        DOM.$allQuestions.css("visibility", "hidden");
-        DOM.$popup.empty();
-        DOM.$popup.html("<div> Total correct: " + tally.correctAnswer).addClass("tally");
-        DOM.$popup.append("<br> Total incorrect: " + tally.incorrectAnswer);
+        this.$allQuestions.css("visibility", "hidden");
+        this.$popup.empty();
+        this.$popup.html("<div> Total correct: " + tally.correctAnswer).addClass("tally");
+        this.$popup.append("<br> Total incorrect: " + tally.incorrectAnswer);
     }
 };
 
@@ -223,7 +223,7 @@ var timer = {
     timerReset: function() {                    
             clearInterval(timer.intervalID);
             clearTimeout(timer.t);
-            timer.time = parseInt(timer.maxTime); 
+            this.time = parseInt(timer.maxTime); 
             DOM.$time.text("00:" + timer.maxTime); 
     },
     count: function(){
