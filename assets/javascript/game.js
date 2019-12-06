@@ -68,12 +68,20 @@ var allQuestions = {
         "Venezuela"
     ),
     question7: new Question(
-        "what is Earth's largest continent?",
+        "What is Earth's largest continent?",
         "Asia",
         "Europe",
         "Africa",
         "Antartica",
         "North America"
+    ),
+    question8: new Question(
+        "What is the oldest city in the world?",
+        "Damascus",
+        "Athens",
+        "Paris",
+        "Jericho",
+        "Jerusalem"
     )     
 };
 // Counting object
