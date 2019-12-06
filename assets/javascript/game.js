@@ -1,8 +1,6 @@
 $(document).ready(function() {
-
 //Global variables, setup objects
 var gamePlaying, state, noQuestions;
-
 //Question constructor and objects
 var Question = function(ques, ans, opt1, opt2, opt3, opt4){
     this.ques = ques;
@@ -12,7 +10,6 @@ var Question = function(ques, ans, opt1, opt2, opt3, opt4){
     this.opt3 = opt3;
     this.opt4 = opt4;
 };
-
 var allQuestions = {
     question0: new Question(
         "What is the world's longest river?",
@@ -71,7 +68,6 @@ var allQuestions = {
         "Venezuela"
     )     
 };
-
 // Counting object
 var tally = {
     correctAnswer: 0,
@@ -92,7 +88,6 @@ var tally = {
     }
 };
 noQuestions = tally.questions();
-
 //UI Object and Methods
 var DOM = {
     $start: $("#start"),
@@ -133,7 +128,6 @@ var DOM = {
         this.$popup.append("<br> Total incorrect: " + tally.incorrectAnswer);
     }
 };
-
 //Questions
 var displayQuestions = {
     nextQuestion: function() {
@@ -195,7 +189,6 @@ var displayQuestions = {
         return random = shuffle(numbers);  
     }     
 };
-
 // Initiate function
 function init() {
     gamePlaying = false; 
@@ -206,7 +199,6 @@ function init() {
     DOM.displayStart();  
     state = 0;  
 };
-
 //Timer object
 var timer = {
     t: 0,
@@ -247,7 +239,6 @@ var timer = {
         return minutes + ":" + seconds;
     }
 };
-
 // Event handlers
 //once start button clicked, start button disappears, question displayed, timer starts
 DOM.$start.on("click", function(){
@@ -257,7 +248,6 @@ DOM.$start.on("click", function(){
     displayQuestions.showQuestions(state);
     timer.timerStart();       
 });
-
 //when option selected
 $(".option").on("click", function() {
     if(gamePlaying === true){
@@ -284,9 +274,7 @@ $(".option").on("click", function() {
             }        
         }
 }
-})
-
+});
 //Initiate game    
 init();
-
 });
