@@ -66,6 +66,14 @@ var allQuestions = {
         "Chile",
         "Argentina",
         "Venezuela"
+    ),
+    question7: new Question(
+        "what is Earth's largest continent?",
+        "Asia",
+        "Europe",
+        "Africa",
+        "Antartica",
+        "North America"
     )     
 };
 // Counting object
