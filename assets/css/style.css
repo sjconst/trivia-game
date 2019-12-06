@@ -5,35 +5,27 @@
     Gray #383838
  
 */
-
-
 /* GLobal styles
 --------------------*/
-
 body{
     background-image: url("../images/bright_squares.png");
     color: #383838;        
     font-size: 1em; 
     font-family: Georgia, 'Times New Roman', Times, serif;    
  }
-
-
 h1 {
     font-family: 'Permanent Marker', cursive;   
     font-size: 2rem;
 }
-
 #timer {
     font-size: 1.5em;
     margin-top: 2%;
 }
-
 #time {
     margin-left: 2%;
     font-weight: 600;
     color: #92623B;
 }
-
 /* Main body styles
 --------------------*/
 #start {
@@ -42,37 +34,30 @@ h1 {
     font-size: 2em;
     top: 30%;
 }
-
 .questions {
     margin-top: 5%;
     font-size: 2em;
 }
-
 #question {
     color: #7FCAAC;
     font-weight: 600;
 }
-
 #winlose {
     font-weight: 600;
     font-size: 1.5em;
     color: #92623B;
 }
-
 .option:hover {
     background: rgba(0, 0, 0, 0);
     color: #7FCAAC;
     box-shadow: inset 0 0 0 3px #F3BF2A;
 }
-
 .tally {
     position: absolute;
     top: 30%;   
     left: 35%; 
     width: 30%;   
 }
-
-
 /* Footer styles
 --------------------*/
 footer {
@@ -84,4 +69,3 @@ footer {
     height: 5%;
     padding-bottom: 5px;
 }
-
