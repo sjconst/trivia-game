@@ -205,7 +205,7 @@ var timer = {
     time: 0,
     intervalID: 0,
     converted: 0,    
-    maxTime: 15,
+    maxTime: 20,
     timerStart: function() {        
             if(gamePlaying) {            
             timer.intervalID = setInterval(timer.count, 1000);                  
@@ -273,7 +273,7 @@ $(".option").on("click", function() {
                 displayQuestions.nextQuestion();   
             }        
         }
-}
+    }
 });
 //Initiate game    
 init();
